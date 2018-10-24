@@ -22,7 +22,7 @@ class Txt2Mobi3:
     def __init__(self):
         self._config_file = '.config.ini'
         # TODO: replace the default cover image URL by the URL in the txt2mobi3 repo.
-        self._default_cover_img_url = 'https://raw.githubusercontent.com/ipconfiger/txt2mobi/master/resources/cover.png'
+        self._default_cover_img_url = 'https://raw.githubusercontent.com/renweizhukov/txt2mobi3/master/resources/img/default_cover.png'
         self._default_cover_img = 'default_cover.png'
         self._default_max_chapters = 1500
         self._config_parser = txt2mobi3_config.Txt2Mobi3Config()
