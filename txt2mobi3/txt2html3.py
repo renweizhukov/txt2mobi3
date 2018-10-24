@@ -3,6 +3,7 @@
 
 import chardet
 import re
+import os
 
 if __package__:
     # If this module is imported as part of the txt2mobi3 package, then use
@@ -334,4 +335,5 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 
 
     def gen_mobi(self, book_idx):
-        return '{kindlegen} project-{book_idx}.opf'.format(kindlegen=self._kindlegen, book_idx=book_idx)
+        return '{kindlegen} {project_opf}'.format(kindlegen=self._kindlegen, 
+            project_opf=os.path.join(os.path.dirname(__file__), 'project-{}.opf'.format(book_idx)))

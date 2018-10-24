@@ -2,25 +2,21 @@
 
 Convert Chinese novel txt files into Kindle mobi files. It basically migrates [txt2mobi3](https://github.com/ipconfiger/txt2mobi) from Python2 to Python3. Since it supports Chinese only, the documentation and the code comments are written in Chinese. 
 
-**注意：目前只支持两种中文编码：UTF-8和GB2312。**
+**注意：**
 
-## 1. 准备步骤
+(1) 目前只支持两种中文编码：UTF-8和GB2312。
 
-### 1.1. 根据你所使用的操作系统下载相应的KindleGen官方转换工具。
+(2) 此转换工具依赖于[Amazon KindleGen官方转换工具](https://www.amazon.com/gp/feature.html?ie=UTF8&docId=1000765211)，因此在其Python package中已包含下载好的分别支持Linux、MacOS和Windows下的三个KindleGen可执行文件。此转换工具会根据当前操作系统来选择相应的KindleGen来调用。
 
-    https://www.amazon.com/gp/feature.html?ie=UTF8&docId=1000765211
+## 1. 安装
 
-### 1.2. 将KindleGen所在的目录添加到PATH环境变量中，这样可以不用每次使用前都配置。
-
-## 2. 安装
-
-### 2.1. 从PyPI安装（**TODO**）：
+### 1.1. 从PyPI安装：
 
 ```bash
 $ pip install txt2mobi3
 ```
 
-### 2.2. 从本地安装：
+### 1.2. 从本地安装：
 
 ```bash
 $ git clone https://github.com/renweizhukov/txt2mobi3.git
@@ -28,7 +24,7 @@ $ cd txt2mobi3
 $ pip install -e .
 ```
 
-## 3. 使用命令行工具`txt2mobi3_clt`
+## 2. 使用命令行工具`txt2mobi3_clt`
 
 可以使用帮助来获得可用的子命令：
 
@@ -52,15 +48,15 @@ optional arguments:
   -h, --help  show this help message and exit
 ```
 
-### 3.1. 初始化
+### 2.1. 初始化
 
-在运行其他命令前，该命令应该被执行一次且仅一次。初始化后会生成配置文件`.config.ini`和下载默认封面图片`default_cover.png`。
+在运行其他命令前，该命令应该被执行一次且仅一次。初始化后会生成配置文件`.config.ini`。
 
 ```bash
 $ txt2mobi3_clt init
 ```
 
-### 3.2. 修改配置
+### 2.2. 修改配置
 
 修改`.config.ini`中的配置。
 
@@ -91,7 +87,7 @@ optional arguments:
                         最大章节数
 ```
 
-### 3.3. 进行从txt到mobi的转化
+### 2.3. 进行从txt到mobi的转化
 
 将txt文件转化为mobi文件同时也会生成一些中间文件（ncx，opf，html）。
 
@@ -120,7 +116,7 @@ optional arguments:
 $ txt2mobi3_clt conv --txt 海晏_琅琊榜.txt --title 琅琊榜 --author 海宴
 ```
 
-### 3.4. 预演从txt到mobi的转化
+### 2.4. 预演从txt到mobi的转化
 
 预演将txt文件转化为mobi文件，但并不生成mobi，只生成一些中间文件（ncx，opf，html）。
 
@@ -149,13 +145,13 @@ optional arguments:
 $ txt2mobi3_clt dryrun --txt 海晏_琅琊榜.txt --title 琅琊榜 --author 海宴
 ```
 
-## 4. 关于Python3中的Unicode
+## 3. 关于Python3中的Unicode
 
 Python3与Python2处理Unicode的方式有很大不同，具体可参考：
 
 https://nedbatchelder.com/text/unipain.html
 
-## 5. README.rst
+## 4. README.rst
 
 README.rst is generated from README.md via `pandoc`.
 

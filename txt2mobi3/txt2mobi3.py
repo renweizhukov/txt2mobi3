@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import os
+import enum
 import pathlib
-import requests
 import shutil
+import sys
 
 if __package__:
     # If this module is imported as part of the txt2mobi3 package, then use
@@ -18,42 +19,65 @@ else:
     import txt2html3            # pylint: disable=import-error
     import txt2mobi3_exceptions # pylint: disable=import-error
 
+
+class OsPlatform(enum.Enum):
+    NONE = 0
+    LINUX = 1
+    MACOS = 2
+    WINDOWS = 3 
+
+
 class Txt2Mobi3:
     def __init__(self):
+        self._os_platform = OsPlatform.NONE
+        if sys.platform == 'linux' or sys.platform == 'linux2':
+            self._os_platform = OsPlatform.LINUX
+        elif sys.platform == 'darwin':
+            self._os_platform = OsPlatform.MACOS
+        elif sys.platform == 'win32':
+            self._os_platform = OsPlatform.WINDOWS
+
+        if self._os_platform == OsPlatform.NONE:
+            print('[ERROR]: 此模块不支持操作系统{}'.format(sys.platform))
+            exit(1)
+        print('[INFO]: 当前操作系统为{}'.format(self._os_platform.name))
+
         self._config_file = '.config.ini'
-        # TODO: replace the default cover image URL by the URL in the txt2mobi3 repo.
-        self._default_cover_img_url = 'https://raw.githubusercontent.com/renweizhukov/txt2mobi3/master/resources/img/default_cover.png'
-        self._default_cover_img = 'default_cover.png'
+        
+        os2subdirs = {OsPlatform.LINUX: 'linux', OsPlatform.MACOS: 'mac', OsPlatform.WINDOWS: 'win32'}
+        os_subdir = os2subdirs[self._os_platform]
+        kindlegen_exe = 'kindlegen' if self._os_platform != OsPlatform.WINDOWS else 'kindlegen.exe'
+        self._default_kindlegen_path = os.path.join(os.path.dirname(__file__), 
+            'resources', 
+            'kindlegen', 
+            os_subdir,
+            kindlegen_exe)
+
+        self._default_cover_img_path = os.path.join(os.path.dirname(__file__), 
+            'resources', 
+            'img', 
+            'default_cover.png')
         self._default_max_chapters = 1500
         self._config_parser = txt2mobi3_config.Txt2Mobi3Config()
 
     def initialize(self):
-        config_file_path = os.path.join(os.getcwd(), self._config_file)
+        config_file_path = os.path.join(os.path.dirname(__file__), self._config_file)
         config_file = pathlib.Path(config_file_path)
         if config_file.is_file():
-            print('[INFO]: 配置文件{}已经初始化'.format(self._config_file))
+            print('[INFO]: 配置文件{}已经初始化'.format(config_file_path))
         else:
             raw_def_configs = [
                 '[txt2mobi3]',
-                'kindlegen=kindlegen',
+                'kindlegen={}'.format(self._default_kindlegen_path),
                 '',
                 '[book]',
-                'def-cover-img={}'.format(self._default_cover_img),
+                'def-cover-img={}'.format(self._default_cover_img_path),
                 'max-chapter={}'.format(self._default_max_chapters),
                 'chapterization=off'
             ]
 
             with open(config_file_path, 'w') as f:
                 f.write('\n'.join(raw_def_configs))
-            
-        default_cover_img_path = os.path.join(os.getcwd(), self._default_cover_img)
-        default_cover_img = pathlib.Path(default_cover_img_path)
-        if default_cover_img.is_file():
-            print('[INFO]: 默认封面图片{}已经下载'.format(self._default_cover_img))
-        else:
-            req = requests.get(self._default_cover_img_url)
-            with open(default_cover_img_path, 'wb') as f:
-                f.write(req.content)
 
 
     def set_config(self, config):
@@ -71,19 +95,19 @@ class Txt2Mobi3:
         for book_idx in range(1, book_count + 1):
             try:
                 # 生成opf文件
-                opf_path = os.path.join(os.getcwd(), 'project-{}.opf'.format(book_idx))
+                opf_path = os.path.join(os.path.dirname(__file__), 'project-{}.opf'.format(book_idx))
                 with open(opf_path, 'w') as f:
                     f.write(book.gen_opf(book_idx))
                 print('project-{}.opf文件生成完毕'.format(book_idx))
 
                 # 生成ncx文件
-                ncx_path = os.path.join(os.getcwd(), 'toc-%s.ncx' % book_idx)
+                ncx_path = os.path.join(os.path.dirname(__file__), 'toc-%s.ncx' % book_idx)
                 with open(ncx_path, 'w') as f:
                     f.write(book.gen_ncx(book_idx))
                 print('toc-{}.ncx文件生成完毕'.format(book_idx))
 
                 # 生成book.html
-                book_path = os.path.join(os.getcwd(), 'book-%s.html' % book_idx)
+                book_path = os.path.join(os.path.dirname(__file__), 'book-%s.html' % book_idx)
                 with open(book_path, 'w') as f:
                     f.write(book.gen_html(book_idx))
                 print('book-{}.html文件生成完毕'.format(book_idx))
@@ -91,7 +115,7 @@ class Txt2Mobi3:
                 # 调用KindleGen来生成mobi文件
                 if not is_dryrun:
                     os.system(book.gen_mobi(book_idx))
-                    src_path = os.path.join(os.getcwd(), 'project-{}.mobi'.format(book_idx))
+                    src_path = os.path.join(os.path.dirname(__file__), 'project-{}.mobi'.format(book_idx))
                     des_path = os.path.join(os.getcwd(), '{}-{}.mobi'.format(book_params['title'], book_idx))
                     shutil.move(src_path, des_path)
             except txt2mobi3_exceptions.EncodingError:

@@ -1,0 +1,6 @@
+# Include the license file
+include LICENSE
+include txt2mobi3/resources/img/default_cover.png
+include txt2mobi3/resources/kindlegen/linux/kindlegen
+include txt2mobi3/resources/kindlegen/mac/kindlegen
+include txt2mobi3/resources/kindlegen/win32/kindlegen.exe
