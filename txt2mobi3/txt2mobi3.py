@@ -76,7 +76,9 @@ class Txt2Mobi3:
                 'chapterization=off'
             ]
 
-            with open(config_file_path, 'w') as f:
+            # The default character set on Windows may be Windows 1252-character set
+            # (i.e., cp1252), so explicitly set the encoding to "utf-8".
+            with open(config_file_path, 'w', encoding='utf-8') as f:
                 f.write('\n'.join(raw_def_configs))
 
 
@@ -96,19 +98,25 @@ class Txt2Mobi3:
             try:
                 # 生成opf文件
                 opf_path = os.path.join(os.path.dirname(__file__), 'project-{}.opf'.format(book_idx))
-                with open(opf_path, 'w') as f:
+                # The default character set on Windows may be Windows 1252-character set
+                # (i.e., cp1252), so explicitly set the encoding to "utf-8".
+                with open(opf_path, 'w', encoding='utf-8') as f:
                     f.write(book.gen_opf(book_idx))
                 print('project-{}.opf文件生成完毕'.format(book_idx))
 
                 # 生成ncx文件
                 ncx_path = os.path.join(os.path.dirname(__file__), 'toc-%s.ncx' % book_idx)
-                with open(ncx_path, 'w') as f:
+                # The default character set on Windows may be Windows 1252-character set
+                # (i.e., cp1252), so explicitly set the encoding to "utf-8".
+                with open(ncx_path, 'w', encoding='utf-8') as f:
                     f.write(book.gen_ncx(book_idx))
                 print('toc-{}.ncx文件生成完毕'.format(book_idx))
 
                 # 生成book.html
                 book_path = os.path.join(os.path.dirname(__file__), 'book-%s.html' % book_idx)
-                with open(book_path, 'w') as f:
+                # The default character set on Windows may be Windows 1252-character set
+                # (i.e., cp1252), so explicitly set the encoding to "utf-8".
+                with open(book_path, 'w', encoding='utf-8') as f:
                     f.write(book.gen_html(book_idx))
                 print('book-{}.html文件生成完毕'.format(book_idx))
 
