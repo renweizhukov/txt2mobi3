@@ -19,7 +19,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='txt2mobi3',
-    version='0.1.4',
+    version='0.1.5',
     description='Convert Chinese novel txt files into Kindle mobi files.',
     long_description=long_description,
     url='https://github.com/renweizhukov/txt2mobi3',
@@ -37,7 +37,6 @@ setup(
     include_package_data=True,
     install_requires=[
         'chardet',
-        'requests',
         'setuptools',
         ],
     # This project depends on a built-in module `secrets` only available

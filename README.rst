@@ -58,6 +58,14 @@ and the code comments are written in Chinese.
     optional arguments:
       -h, --help  show this help message and exit
 
+注意在Windows
+console中运行\ ``txt2mobi3_clt``\ 时可能需要先执行下面这个\ ``chcp``\ 命令将code
+page设成“UTF-8”，否则无法正确显示其输出的中文字符。
+
+::
+
+    chcp 65001
+
 2.1. 初始化
 ~~~~~~~~~~~
 
