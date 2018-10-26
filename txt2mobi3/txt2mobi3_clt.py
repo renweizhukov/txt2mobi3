@@ -66,13 +66,13 @@ class Txt2Mobi3Clt:
     (4) 设置最大章节数。
             ''',
             formatter_class=argparse.RawTextHelpFormatter)
-        parser.add_argument('--kindlegen', dest='kindlegen',
+        parser.add_argument('-k', '--kindlegen', dest='kindlegen',
             help='Amazon官方转化工具KindleGen的本地路径')
-        parser.add_argument('--defcoverimg', dest='def_cover_img',
+        parser.add_argument('-i', '--defcoverimg', dest='def_cover_img',
             help='默认封面图片的本地路径')
-        parser.add_argument('--chapterization', dest='chapterization', type=str2bool, 
+        parser.add_argument('-c', '--chapterization', dest='chapterization', type=str2bool, 
             help='划分章节并生成目录')
-        parser.add_argument('--maxchapter', dest='max_chapter', type=int, 
+        parser.add_argument('-m', '--maxchapter', dest='max_chapter', type=int, 
             help='最大章节数')
         args = parser.parse_args(sys.argv[2:])
         config = {}
@@ -108,20 +108,24 @@ class Txt2Mobi3Clt:
         parser = argparse.ArgumentParser(
             description=description,
             formatter_class=argparse.RawTextHelpFormatter)
-        parser.add_argument('--txt', dest='txt_file', required=True,
+        parser.add_argument('-x', '--txt', dest='txt_file', required=True,
             help='txt文件的本地路径')
-        parser.add_argument('--title', dest='title', required=True, 
+        parser.add_argument('-t', '--title', dest='title', required=True, 
             help='mobi书的标题')
-        parser.add_argument('--author', dest='author',
+        parser.add_argument('-a', '--author', dest='author',
             help='mobi书的作者（可选项）')
-        parser.add_argument('--coverimg', dest='cover_img_file', 
+        parser.add_argument('-i', '--coverimg', dest='cover_img_file', 
             help='封面图片的本地路径（可选项）')
+        parser.add_argument('-d', '--dest', dest='dest_dir', 
+            help='mobi书的输出目录（可选项）')
         args = parser.parse_args(sys.argv[2:])
         book_params = {'txt_file': args.txt_file, 'title': args.title}
         if args.author:
             book_params['author'] = args.author
         if args.cover_img_file:
             book_params['cover_img_file'] = args.cover_img_file
+        if args.dest_dir:
+            book_params['dest_dir'] = args.dest_dir
         self._txt2mobi3.convert(is_dryrun, book_params)
 
 

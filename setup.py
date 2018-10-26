@@ -19,14 +19,14 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='txt2mobi3',
-    version='0.1.5',
+    version='0.2.0',
     description='Convert Chinese novel txt files into Kindle mobi files.',
     long_description=long_description,
     url='https://github.com/renweizhukov/txt2mobi3',
     author='Wei Ren',
     author_email='renwei2004@gmail.com',
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: End Users/Desktop',
         'Topic :: Text Processing :: General',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',

@@ -124,7 +124,8 @@ class Txt2Mobi3:
                 if not is_dryrun:
                     os.system(book.gen_mobi(book_idx))
                     src_path = os.path.join(os.path.dirname(__file__), 'project-{}.mobi'.format(book_idx))
-                    des_path = os.path.join(os.getcwd(), '{}-{}.mobi'.format(book_params['title'], book_idx))
+                    des_dir = book_params.get('dest_dir', os.getcwd())
+                    des_path = os.path.join(des_dir, '{}-{}.mobi'.format(book_params['title'], book_idx))
                     shutil.move(src_path, des_path)
             except txt2mobi3_exceptions.EncodingError:
                 print('文件编码异常无法解析，请尝试用iconv来转码成utf8后再试，或者提交issuse')
