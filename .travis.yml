@@ -1,0 +1,11 @@
+language: python
+python:
+- '3'
+deploy:
+  provider: pypi
+  user: renwei2
+  password:
+    secure: GdUgSweXc9xx/H4YpBdtmj+h4nEVh30Jah/Tlatgy+IKBlyGS/vMBoLFH5F9PZnG+L7i/YLboR3O3xAMmZnvvcTrmNP4E45UrTUxMI95V0GWqCLgE1yxG1k8+1K/csDLp6agH/w2I7fl2IiQsVHgfHKTancmxmUq/xXPa/ixJmGIvuW46VcMwdOkok3p2GheyKVuZYtkW50CpsYXA1pe3Xs5rBrXp0U11j4uciNuNpRGklb746qIebrGLiYBAzHpQFvo3ETAtfr1uY83gX0ol/R33Tt8GOEOM/6zy66SerdPe+blaEe2RCN0tX4b5MUOyQosTt+Ma8fNLQkFXpaQWLJLchrDaoU+h+VIWF20StmX6ZKF5rIQbKL1udkrqJCtgZjay/I5jBd3JoVXF4O55SnYGw2R19vFD7O5w6hHa4uj7U0KWnci+9IhwniqFI9saEzC7Vpzzky+YT78R36BiK6gOMHnzMvsdbnNcL1MWqZ2aDzfzGrlN0e/HXF7DV84orr3gzfff4qMthUjK0pWPp8ZFaN1kKeKqHtTqFJKSj+hpNJpvLmD0DyPo3M8lc1Cwe5c8bmJNHh2QimTQVxh5yKOoEPD4N2zJUgFqnaXhapheYPuxd1pWp/VupwcRqXm4W4KPmcTSQFBrB7AvwFLYUljYAmN4LPdVFIewcmHfAI=
+  on:
+    tags: true
+  distributions: sdist bdist_wheel
