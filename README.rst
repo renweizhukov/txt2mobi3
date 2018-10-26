@@ -83,10 +83,8 @@ page设成“UTF-8”，否则无法正确显示其输出的中文字符。
 .. code:: bash
 
     $ ./txt2mobi3_clt config -h
-    usage: txt2mobi3_clt [-h] [--kindlegen KINDLEGEN]
-                         [--defcoverimg DEF_COVER_IMG]
-                         [--chapterization CHAPTERIZATION]
-                         [--maxchapter MAX_CHAPTER]
+    usage: txt2mobi3_clt [-h] [-k KINDLEGEN] [-i DEF_COVER_IMG]
+                         [-c CHAPTERIZATION] [-m MAX_CHAPTER]
 
     配置从txt到mobi的转化：
 
@@ -98,13 +96,13 @@ page设成“UTF-8”，否则无法正确显示其输出的中文字符。
 
     optional arguments:
       -h, --help            show this help message and exit
-      --kindlegen KINDLEGEN
+      -k KINDLEGEN, --kindlegen KINDLEGEN
                             Amazon官方转化工具KindleGen的本地路径
-      --defcoverimg DEF_COVER_IMG
+      -i DEF_COVER_IMG, --defcoverimg DEF_COVER_IMG
                             默认封面图片的本地路径
-      --chapterization CHAPTERIZATION
+      -c CHAPTERIZATION, --chapterization CHAPTERIZATION
                             划分章节并生成目录
-      --maxchapter MAX_CHAPTER
+      -m MAX_CHAPTER, --maxchapter MAX_CHAPTER
                             最大章节数
 
 2.3. 进行从txt到mobi的转化
@@ -115,8 +113,8 @@ page设成“UTF-8”，否则无法正确显示其输出的中文字符。
 .. code:: bash
 
     $ txt2mobi3_clt conv -h
-    usage: txt2mobi3_clt [-h] --txt TXT_FILE --title TITLE [--author AUTHOR]
-                         [--coverimg COVER_IMG_FILE]
+    usage: txt2mobi3_clt [-h] -x TXT_FILE -t TITLE [-a AUTHOR] [-i COVER_IMG_FILE]
+                         [-d DEST_DIR]
 
     将一个txt文件转化为mobi：
                 
@@ -125,11 +123,16 @@ page设成“UTF-8”，否则无法正确显示其输出的中文字符。
 
     optional arguments:
       -h, --help            show this help message and exit
-      --txt TXT_FILE        txt文件的本地路径
-      --title TITLE         mobi书的标题
-      --author AUTHOR       mobi书的作者（可选项）
-      --coverimg COVER_IMG_FILE
+      -x TXT_FILE, --txt TXT_FILE
+                            txt文件的本地路径
+      -t TITLE, --title TITLE
+                            mobi书的标题
+      -a AUTHOR, --author AUTHOR
+                            mobi书的作者（可选项）
+      -i COVER_IMG_FILE, --coverimg COVER_IMG_FILE
                             封面图片的本地路径（可选项）
+      -d DEST_DIR, --dest DEST_DIR
+                            mobi书的输出目录（可选项）
 
 例子：
 
@@ -145,8 +148,8 @@ page设成“UTF-8”，否则无法正确显示其输出的中文字符。
 .. code:: bash
 
     $ txt2mobi3_clt dryrun -h
-    usage: txt2mobi3_clt [-h] --txt TXT_FILE --title TITLE [--author AUTHOR]
-                         [--coverimg COVER_IMG_FILE]
+    usage: txt2mobi3_clt [-h] -x TXT_FILE -t TITLE [-a AUTHOR] [-i COVER_IMG_FILE]
+                         [-d DEST_DIR]
 
     预演从txt到mobi的转化：
         
@@ -155,11 +158,16 @@ page设成“UTF-8”，否则无法正确显示其输出的中文字符。
 
     optional arguments:
       -h, --help            show this help message and exit
-      --txt TXT_FILE        txt文件的本地路径
-      --title TITLE         mobi书的标题
-      --author AUTHOR       mobi书的作者（可选项）
-      --coverimg COVER_IMG_FILE
+      -x TXT_FILE, --txt TXT_FILE
+                            txt文件的本地路径
+      -t TITLE, --title TITLE
+                            mobi书的标题
+      -a AUTHOR, --author AUTHOR
+                            mobi书的作者（可选项）
+      -i COVER_IMG_FILE, --coverimg COVER_IMG_FILE
                             封面图片的本地路径（可选项）
+      -d DEST_DIR, --dest DEST_DIR
+                            mobi书的输出目录（可选项）
 
 例子：
 
