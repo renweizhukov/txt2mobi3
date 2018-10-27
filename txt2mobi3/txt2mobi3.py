@@ -69,6 +69,10 @@ class Txt2Mobi3:
             self.reset_config()
 
 
+    def get_config(self, config_name):
+        return getattr(self._config_parser, config_name)
+
+
     def set_config(self, config):
         for k, v in config.items():
             setattr(self._config_parser, k, v)
@@ -92,7 +96,7 @@ class Txt2Mobi3:
             f.write('\n'.join(raw_def_configs))
 
         self._config_parser.reload()
-        
+
 
     def convert(self, is_dryrun, book_params):
         # Create the "Book" instance.
