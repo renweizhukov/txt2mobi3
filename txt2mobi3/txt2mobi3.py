@@ -81,6 +81,8 @@ class Txt2Mobi3:
             with open(config_file_path, 'w', encoding='utf-8') as f:
                 f.write('\n'.join(raw_def_configs))
 
+            self._config_parser.reload()
+
 
     def set_config(self, config):
         for k, v in config.items():

@@ -57,3 +57,7 @@ class Txt2Mobi3Config:
     def update(self):
        with open(self._file_path, 'w') as config_file:
            self._cfp.write(config_file) 
+
+
+    def reload(self):
+        self._cfp.read(self._file_path)
