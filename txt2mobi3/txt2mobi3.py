@@ -43,6 +43,7 @@ class Txt2Mobi3:
         print('[INFO]: 当前操作系统为{}'.format(self._os_platform.name))
 
         self._config_file = '.config.ini'
+        self._config_file_path = os.path.join(os.path.dirname(__file__), self._config_file)
         
         os2subdirs = {OsPlatform.LINUX: 'linux', OsPlatform.MACOS: 'mac', OsPlatform.WINDOWS: 'win32'}
         os_subdir = os2subdirs[self._os_platform]
@@ -61,33 +62,36 @@ class Txt2Mobi3:
         self._config_parser = txt2mobi3_config.Txt2Mobi3Config()
 
     def initialize(self):
-        config_file_path = os.path.join(os.path.dirname(__file__), self._config_file)
-        config_file = pathlib.Path(config_file_path)
+        config_file = pathlib.Path(self._config_file_path)
         if config_file.is_file():
-            print('[INFO]: 配置文件{}已经初始化'.format(config_file_path))
+            print('[INFO]: 配置文件{}已经初始化'.format(self._config_file_path))
         else:
-            raw_def_configs = [
-                '[txt2mobi3]',
-                'kindlegen={}'.format(self._default_kindlegen_path),
-                '',
-                '[book]',
-                'def-cover-img={}'.format(self._default_cover_img_path),
-                'max-chapter={}'.format(self._default_max_chapters),
-                'chapterization=off'
-            ]
-
-            # The default character set on Windows may be Windows 1252-character set
-            # (i.e., cp1252), so explicitly set the encoding to "utf-8".
-            with open(config_file_path, 'w', encoding='utf-8') as f:
-                f.write('\n'.join(raw_def_configs))
-
-            self._config_parser.reload()
+            self.reset_config()
 
 
     def set_config(self, config):
         for k, v in config.items():
             setattr(self._config_parser, k, v)
         self._config_parser.update()
+
+
+    def reset_config(self):
+        raw_def_configs = [
+            '[txt2mobi3]',
+            'kindlegen={}'.format(self._default_kindlegen_path),
+            '',
+            '[book]',
+            'def-cover-img={}'.format(self._default_cover_img_path),
+            'max-chapter={}'.format(self._default_max_chapters),
+            'chapterization=off'
+        ]
+
+        # The default character set on Windows may be Windows 1252-character set
+        # (i.e., cp1252), so explicitly set the encoding to "utf-8".
+        with open(self._config_file_path, 'w', encoding='utf-8') as f:
+            f.write('\n'.join(raw_def_configs))
+
+        self._config_parser.reload()
         
 
     def convert(self, is_dryrun, book_params):
