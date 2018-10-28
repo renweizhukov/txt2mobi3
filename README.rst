@@ -2,7 +2,7 @@ txt2mobi3
 =========
 
 Convert Chinese novel txt files into Kindle mobi files. It basically
-migrates `txt2mobi3 <https://github.com/ipconfiger/txt2mobi>`__ from
+migrates `txt2mobi <https://github.com/ipconfiger/txt2mobi>`__ from
 Python2 to Python3. Since it supports Chinese only, the documentation
 and the code comments are written in Chinese.
 

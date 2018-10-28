@@ -39,8 +39,6 @@ setup(
         'chardet',
         'setuptools',
         ],
-    # This project depends on a built-in module `secrets` only available
-    # in Python 3.6 and later,
     python_requires='>=3',
     entry_points={
         'console_scripts': [
