@@ -5,10 +5,10 @@ import configparser
 
 
 class Txt2Mobi3Config:
-    def __init__(self):
+    def __init__(self, config_file_path):
         try:
             # TODO: define '.config.ini' as a constant.
-            self._file_path = os.path.join(os.path.dirname(__file__), '.config.ini')
+            self._file_path = config_file_path
             self._cfp = configparser.ConfigParser()
             self._cfp.read(self._file_path)
         except Exception as excep:

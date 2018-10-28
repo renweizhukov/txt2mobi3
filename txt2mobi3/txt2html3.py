@@ -74,8 +74,8 @@ class Book:
     """
     书对象
     """
-    def __init__(self, book_params):        
-        self._config = txt2mobi3_config.Txt2Mobi3Config()
+    def __init__(self, book_params, config_dir):        
+        self._config = txt2mobi3_config.Txt2Mobi3Config(os.path.join(config_dir, '.config.ini'))
         
         # 以二进制形式读入文件得到bytes从而来识别字符集
         with open(book_params['txt_file'], 'rb') as f:
@@ -87,6 +87,7 @@ class Book:
         self._chapterization = self._config.chapterization
         self._max_chapters = self._config.max_chapter
         self._chapters = []
+        self._config_dir = config_dir
 
         self._process_lines(lines)
         
@@ -347,4 +348,4 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     def gen_mobi(self, book_idx):
         project_opf_filename = 'project-{}.opf'.format(book_idx) if self._chapterization else 'project.opf'
         return '{kindlegen} {project_opf}'.format(kindlegen=self._kindlegen, 
-            project_opf=os.path.join(os.path.dirname(__file__), project_opf_filename))
+            project_opf=os.path.join(self._config_dir, project_opf_filename))

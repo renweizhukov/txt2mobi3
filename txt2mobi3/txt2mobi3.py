@@ -42,13 +42,13 @@ class Txt2Mobi3:
             exit(1)
         print('[INFO]: 当前操作系统为{}'.format(self._os_platform.name))
 
-        # "os.path.dirname(__file__)" may not exist if txt2mobi3.py is enclosed
-        # in a standalone executable.
-        if not os.path.exists(os.path.dirname(__file__)):
-            os.makedirs(os.path.dirname(__file__))
+        self._config_dir = os.path.join(os.path.expanduser('~'), '.txt2mobi3')
+        if not os.path.exists(self._config_dir):
+            # If "~/.txt2mobi3" does not exist, create the directory.
+            os.mkdir(self._config_dir)
 
         self._config_file = '.config.ini'
-        self._config_file_path = os.path.join(os.path.dirname(__file__), self._config_file)
+        self._config_file_path = os.path.join(self._config_dir, self._config_file)
         
         os2subdirs = {OsPlatform.LINUX: 'linux', OsPlatform.MACOS: 'mac', OsPlatform.WINDOWS: 'win32'}
         os_subdir = os2subdirs[self._os_platform]
@@ -64,7 +64,7 @@ class Txt2Mobi3:
             'img', 
             'default_cover.png')
         self._default_max_chapters = 1500
-        self._config_parser = txt2mobi3_config.Txt2Mobi3Config()
+        self._config_parser = txt2mobi3_config.Txt2Mobi3Config(self._config_file_path)
 
     def initialize(self):
         config_file = pathlib.Path(self._config_file_path)
@@ -105,7 +105,7 @@ class Txt2Mobi3:
 
     def convert(self, is_dryrun, book_params):
         # Create the "Book" instance.
-        book = txt2html3.Book(book_params)
+        book = txt2html3.Book(book_params, self._config_dir)
         book.trim_empty_chapters()
         # 生成opf文件
         book_count = book.book_count()
@@ -121,7 +121,7 @@ class Txt2Mobi3:
                     html_filename = 'book.html'
 
                 # 生成opf文件
-                opf_path = os.path.join(os.path.dirname(__file__), opf_filename)
+                opf_path = os.path.join(self._config_dir, opf_filename)
                 # The default character set on Windows may be Windows 1252-character set
                 # (i.e., cp1252), so explicitly set the encoding to "utf-8".
                 with open(opf_path, 'w', encoding='utf-8') as f:
@@ -129,20 +129,20 @@ class Txt2Mobi3:
                 print('{}文件生成完毕'.format(opf_filename))
 
                 # 生成ncx文件
-                ncx_path = os.path.join(os.path.dirname(__file__), ncx_filename)
+                ncx_path = os.path.join(self._config_dir, ncx_filename)
                 # The default character set on Windows may be Windows 1252-character set
                 # (i.e., cp1252), so explicitly set the encoding to "utf-8".
                 with open(ncx_path, 'w', encoding='utf-8') as f:
                     f.write(book.gen_ncx(book_idx))
-                print('{}.ncx文件生成完毕'.format(ncx_filename))
+                print('{}文件生成完毕'.format(ncx_filename))
 
                 # 生成book.html
-                book_path = os.path.join(os.path.dirname(__file__), html_filename)
+                book_path = os.path.join(self._config_dir, html_filename)
                 # The default character set on Windows may be Windows 1252-character set
                 # (i.e., cp1252), so explicitly set the encoding to "utf-8".
                 with open(book_path, 'w', encoding='utf-8') as f:
                     f.write(book.gen_html(book_idx))
-                print('{}.html文件生成完毕'.format(html_filename))
+                print('{}文件生成完毕'.format(html_filename))
 
                 # 调用KindleGen来生成mobi文件
                 if not is_dryrun:
@@ -153,7 +153,7 @@ class Txt2Mobi3:
                     else:
                         src_mobi_filename = 'project.mobi'
                         des_mobi_filename = '{}.mobi'.format(book_params['title'])
-                    src_path = os.path.join(os.path.dirname(__file__), src_mobi_filename)
+                    src_path = os.path.join(self._config_dir, src_mobi_filename)
                     des_dir = book_params.get('dest_dir', os.getcwd())
                     des_path = os.path.join(des_dir, des_mobi_filename)
                     shutil.move(src_path, des_path)
