@@ -21,9 +21,11 @@ class Txt2Mobi3Clt:
                 
     可用的子命令如下：
         init    初始化从txt到mobi的转化。在运行其他命令前，该命令应该被执行一次且仅一次。
-        config  配置从txt到mobi的转化。
+        gconf   读取从txt到mobi的转化配置。
+        sconf   修改从txt到mobi的转化配置。
+        rconf   重置从txt到mobi的转化配置。
         conv    进行从txt到mobi的转化。
-        dryrun  预演从txt到mobi的转化。
+        drun    预演从txt到mobi的转化。
                 ''')
         parser.add_argument('command', help='可执行的子命令')       
         # parse_args defaults to [1:] for args but we need to only take the first argument as subcommand.
@@ -39,6 +41,7 @@ class Txt2Mobi3Clt:
 
     def init(self):
         parser = argparse.ArgumentParser(
+            prog='txt2mobi3_clt {}'.format(sys.argv[1]),
             description='''初始化从txt到mobi的转化：
             
     (1) 创建配置文件.config.ini；
@@ -48,7 +51,38 @@ class Txt2Mobi3Clt:
         _ = parser.parse_args(sys.argv[2:])
         self._txt2mobi3.initialize()
 
-    def config(self):
+
+    def gconf(self):
+        parser = argparse.ArgumentParser(
+            prog='txt2mobi3_clt {}'.format(sys.argv[1]),
+            description='''读取从txt到mobi的转化配置：
+
+    (1) Amazon官方转化工具KindleGen的本地路径；
+    (2) 默认封面图片的本地路径；
+    (3) 是否划分章节并生成目录；
+    (4) 最大章节数。
+            ''',
+            formatter_class=argparse.RawTextHelpFormatter)
+        parser.add_argument('-k', '--kindlegen', dest='kindlegen', action='store_true',
+            help='Amazon官方转化工具KindleGen的本地路径')
+        parser.add_argument('-i', '--defcoverimg', dest='def_cover_img', action='store_true',
+            help='默认封面图片的本地路径')
+        parser.add_argument('-c', '--chapterization', dest='chapterization', action='store_true', 
+            help='划分章节并生成目录')
+        parser.add_argument('-m', '--maxchapter', dest='max_chapter', action='store_true',
+            help='最大章节数')
+        args = parser.parse_args(sys.argv[2:])
+        if args.kindlegen:
+            print('Amazon官方转化工具KindleGen的本地路径：{}'.format(self._txt2mobi3.get_config('kindlegen')))
+        if args.def_cover_img:
+            print('默认封面图片的本地路径：{}'.format(self._txt2mobi3.get_config('def_cover_img')))
+        if args.chapterization:
+            print('划分章节并生成目录：{}'.format(self._txt2mobi3.get_config('chapterization')))
+        if args.max_chapter:
+            print('最大章节数：{}'.format(self._txt2mobi3.get_config('max_chapter')))
+
+
+    def sconf(self):
         def str2bool(str):
             if str.lower() in ('yes', 'true', 'on', 'y', 't', '1'):
                 return True
@@ -58,12 +92,13 @@ class Txt2Mobi3Clt:
                 raise argparse.ArgumentTypeError('Boolean value expected')
 
         parser = argparse.ArgumentParser(
-            description='''配置从txt到mobi的转化：
+            prog='txt2mobi3_clt {}'.format(sys.argv[1]),
+            description='''修改从txt到mobi的转化配置：
 
-    (1) 设置Amazon官方转化工具KindleGen的本地路径；
-    (2) 设置默认封面图片的本地路径；
-    (3) 设置是否划分章节并生成目录；
-    (4) 设置最大章节数。
+    (1) Amazon官方转化工具KindleGen的本地路径；
+    (2) 默认封面图片的本地路径；
+    (3) 是否划分章节并生成目录；
+    (4) 最大章节数。
             ''',
             formatter_class=argparse.RawTextHelpFormatter)
         parser.add_argument('-k', '--kindlegen', dest='kindlegen',
@@ -87,11 +122,28 @@ class Txt2Mobi3Clt:
         self._txt2mobi3.set_config(config)
 
 
+    def rconf(self):
+        parser = argparse.ArgumentParser(
+            prog='txt2mobi3_clt {}'.format(sys.argv[1]),
+            description='''重置从txt到mobi的转化配置：
+
+    (1) Amazon官方转化工具KindleGen的本地路径；
+    (2) 默认封面图片的本地路径；
+    (3) 是否划分章节并生成目录；
+    (4) 最大章节数。
+            ''',
+            formatter_class=argparse.RawTextHelpFormatter)
+        _ = parser.parse_args(sys.argv[2:])
+        self._txt2mobi3.reset_config()
+
+
     def conv(self):
         self._conv()
 
-    def dryrun(self):
+
+    def drun(self):
         self._conv(is_dryrun=True)
+
 
     def _conv(self, is_dryrun=False):
         if not is_dryrun:
@@ -106,6 +158,7 @@ class Txt2Mobi3Clt:
             '''
 
         parser = argparse.ArgumentParser(
+            prog='txt2mobi3_clt {}'.format(sys.argv[1]),
             description=description,
             formatter_class=argparse.RawTextHelpFormatter)
         parser.add_argument('-x', '--txt', dest='txt_file', required=True,

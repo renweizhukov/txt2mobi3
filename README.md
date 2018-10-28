@@ -34,9 +34,11 @@ usage: txt2mobi3_clt <command> [<args>]
                 
     可用的子命令如下：
         init    初始化从txt到mobi的转化。在运行其他命令前，该命令应该被执行一次且仅一次。
-        config  配置从txt到mobi的转化。
+        gconf   读取从txt到mobi的转化配置。
+        sconf   修改从txt到mobi的转化配置。
+        rconf   重置从txt到mobi的转化配置。
         conv    进行从txt到mobi的转化。
-        dryrun  预演从txt到mobi的转化。
+        drun    预演从txt到mobi的转化。
                 
 
 将一个txt转化为一个可被Amazon Kindle使用的mobi文件。
@@ -59,24 +61,58 @@ chcp 65001
 在运行其他命令前，该命令应该被执行一次且仅一次。初始化后会生成配置文件`.config.ini`。
 
 ```bash
-$ txt2mobi3_clt init
+$ txt2mobi3_clt init -h
+usage: txt2mobi3_clt init [-h]
+
+初始化从txt到mobi的转化：
+            
+    (1) 创建配置文件.config.ini；
+    (2) 下载默认封面图片。
+            
+
+optional arguments:
+  -h, --help  show this help message and exit
 ```
 
-### 2.2. 修改配置
+### 2.2. 读取配置
+
+读取`.config.ini`中的配置。
+
+```bash
+$ ./txt2mobi3_clt gconf -h
+usage: txt2mobi3_clt gconf [-h] [-k] [-i] [-c] [-m]
+
+读取从txt到mobi的转化配置：
+
+    (1) Amazon官方转化工具KindleGen的本地路径；
+    (2) 默认封面图片的本地路径；
+    (3) 是否划分章节并生成目录；
+    (4) 最大章节数。
+            
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -k, --kindlegen       Amazon官方转化工具KindleGen的本地路径
+  -i, --defcoverimg     默认封面图片的本地路径
+  -c, --chapterization  划分章节并生成目录
+  -m, --maxchapter      最大章节数
+```
+
+### 2.3. 修改配置
 
 修改`.config.ini`中的配置。
 
 ```bash
-$ ./txt2mobi3_clt config -h
-usage: txt2mobi3_clt [-h] [-k KINDLEGEN] [-i DEF_COVER_IMG]
-                     [-c CHAPTERIZATION] [-m MAX_CHAPTER]
+$ ./txt2mobi3_clt sconf -h
+usage: txt2mobi3_clt sconf [-h] [-k KINDLEGEN] [-i DEF_COVER_IMG]
+                           [-c CHAPTERIZATION] [-m MAX_CHAPTER]
 
-配置从txt到mobi的转化：
+修改从txt到mobi的转化配置：
 
-    (1) 设置Amazon官方转化工具KindleGen的本地路径；
-    (2) 设置默认封面图片的本地路径；
-    (3) 设置是否划分章节并生成目录；
-    (4) 设置最大章节数。
+    (1) Amazon官方转化工具KindleGen的本地路径；
+    (2) 默认封面图片的本地路径；
+    (3) 是否划分章节并生成目录；
+    (4) 最大章节数。
             
 
 optional arguments:
@@ -91,14 +127,34 @@ optional arguments:
                         最大章节数
 ```
 
-### 2.3. 进行从txt到mobi的转化
+### 2.4. 重置配置
+
+将`.config.ini`中的配置重置为默认配置。
+
+```bash
+$ ./txt2mobi3_clt rconf -h
+usage: txt2mobi3_clt rconf [-h]
+
+重置从txt到mobi的转化配置：
+
+    (1) Amazon官方转化工具KindleGen的本地路径；
+    (2) 默认封面图片的本地路径；
+    (3) 是否划分章节并生成目录；
+    (4) 最大章节数。
+            
+
+optional arguments:
+  -h, --help  show this help message and exit
+```
+
+### 2.5. 进行从txt到mobi的转化
 
 将txt文件转化为mobi文件同时也会生成一些中间文件（ncx，opf，html）。
 
 ```bash
 $ txt2mobi3_clt conv -h
-usage: txt2mobi3_clt [-h] -x TXT_FILE -t TITLE [-a AUTHOR] [-i COVER_IMG_FILE]
-                     [-d DEST_DIR]
+usage: txt2mobi3_clt conv [-h] -x TXT_FILE -t TITLE [-a AUTHOR]
+                          [-i COVER_IMG_FILE] [-d DEST_DIR]
 
 将一个txt文件转化为mobi：
             
@@ -130,9 +186,9 @@ $ txt2mobi3_clt conv --txt 海晏_琅琊榜.txt --title 琅琊榜 --author 海�
 预演将txt文件转化为mobi文件，但并不生成mobi，只生成一些中间文件（ncx，opf，html）。
 
 ```bash
-$ txt2mobi3_clt dryrun -h
-usage: txt2mobi3_clt [-h] -x TXT_FILE -t TITLE [-a AUTHOR] [-i COVER_IMG_FILE]
-                     [-d DEST_DIR]
+$ txt2mobi3_clt drun -h
+usage: txt2mobi3_clt drun [-h] -x TXT_FILE -t TITLE [-a AUTHOR]
+                          [-i COVER_IMG_FILE] [-d DEST_DIR]
 
 预演从txt到mobi的转化：
     
@@ -156,7 +212,7 @@ optional arguments:
 例子：
 
 ```bash
-$ txt2mobi3_clt dryrun --txt 海晏_琅琊榜.txt --title 琅琊榜 --author 海宴
+$ txt2mobi3_clt drun --txt 海晏_琅琊榜.txt --title 琅琊榜 --author 海宴
 ```
 
 ## 3. 关于Python3中的Unicode
