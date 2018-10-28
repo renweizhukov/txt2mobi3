@@ -42,6 +42,11 @@ class Txt2Mobi3:
             exit(1)
         print('[INFO]: 当前操作系统为{}'.format(self._os_platform.name))
 
+        # "os.path.dirname(__file__)" may not exist if txt2mobi3.py is enclosed
+        # in a standalone executable.
+        if not os.path.exists(os.path.dirname(__file__)):
+            os.makedirs(os.path.dirname(__file__))
+
         self._config_file = '.config.ini'
         self._config_file_path = os.path.join(os.path.dirname(__file__), self._config_file)
         
