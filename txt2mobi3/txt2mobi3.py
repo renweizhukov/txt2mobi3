@@ -106,36 +106,51 @@ class Txt2Mobi3:
         book_count = book.book_count()
         for book_idx in range(1, book_count + 1):
             try:
+                if self.get_config('chapterization'):
+                    opf_filename = 'project-{}.opf'.format(book_idx)
+                    ncx_filename = 'toc-{}.ncx'.format(book_idx)
+                    html_filename = 'book-{}.html'.format(book_idx)
+                else:
+                    opf_filename = 'project.opf'
+                    ncx_filename = 'toc.ncx'
+                    html_filename = 'book.html'
+
                 # 生成opf文件
-                opf_path = os.path.join(os.path.dirname(__file__), 'project-{}.opf'.format(book_idx))
+                opf_path = os.path.join(os.path.dirname(__file__), opf_filename)
                 # The default character set on Windows may be Windows 1252-character set
                 # (i.e., cp1252), so explicitly set the encoding to "utf-8".
                 with open(opf_path, 'w', encoding='utf-8') as f:
                     f.write(book.gen_opf(book_idx))
-                print('project-{}.opf文件生成完毕'.format(book_idx))
+                print('{}文件生成完毕'.format(opf_filename))
 
                 # 生成ncx文件
-                ncx_path = os.path.join(os.path.dirname(__file__), 'toc-%s.ncx' % book_idx)
+                ncx_path = os.path.join(os.path.dirname(__file__), ncx_filename)
                 # The default character set on Windows may be Windows 1252-character set
                 # (i.e., cp1252), so explicitly set the encoding to "utf-8".
                 with open(ncx_path, 'w', encoding='utf-8') as f:
                     f.write(book.gen_ncx(book_idx))
-                print('toc-{}.ncx文件生成完毕'.format(book_idx))
+                print('{}.ncx文件生成完毕'.format(ncx_filename))
 
                 # 生成book.html
-                book_path = os.path.join(os.path.dirname(__file__), 'book-%s.html' % book_idx)
+                book_path = os.path.join(os.path.dirname(__file__), html_filename)
                 # The default character set on Windows may be Windows 1252-character set
                 # (i.e., cp1252), so explicitly set the encoding to "utf-8".
                 with open(book_path, 'w', encoding='utf-8') as f:
                     f.write(book.gen_html(book_idx))
-                print('book-{}.html文件生成完毕'.format(book_idx))
+                print('{}.html文件生成完毕'.format(html_filename))
 
                 # 调用KindleGen来生成mobi文件
                 if not is_dryrun:
                     os.system(book.gen_mobi(book_idx))
-                    src_path = os.path.join(os.path.dirname(__file__), 'project-{}.mobi'.format(book_idx))
+                    if self.get_config('chapterization'):
+                        src_mobi_filename = 'project-{}.mobi'.format(book_idx)
+                        des_mobi_filename = '{}-{}.mobi'.format(book_params['title'], book_idx)
+                    else:
+                        src_mobi_filename = 'project.mobi'
+                        des_mobi_filename = '{}.mobi'.format(book_params['title'])
+                    src_path = os.path.join(os.path.dirname(__file__), src_mobi_filename)
                     des_dir = book_params.get('dest_dir', os.getcwd())
-                    des_path = os.path.join(des_dir, '{}-{}.mobi'.format(book_params['title'], book_idx))
+                    des_path = os.path.join(des_dir, des_mobi_filename)
                     shutil.move(src_path, des_path)
             except txt2mobi3_exceptions.EncodingError:
                 print('文件编码异常无法解析，请尝试用iconv来转码成utf8后再试，或者提交issuse')

@@ -187,11 +187,20 @@ class Book:
         :return:
         :rtype:
         """
+        if self._chapterization:
+            title = '{title}-{book_idx}'.format(title=self._title, book_idx=book_idx)
+            book = 'book-{book_idx}'.format(book_idx=book_idx)
+            toc = 'toc-{book_idx}'.format(book_idx=book_idx)
+        else:
+            title = '{title}'.format(title=self._title)
+            book = 'book'
+            toc = 'toc'
+
         opf_file = """<?xml version="1.0" encoding="utf-8"?>
 <package unique-identifier="uid" xmlns:opf="http://www.idpf.org/2007/opf" xmlns:asd="http://www.idpf.org/asdfaf">
     <metadata>
         <dc-metadata  xmlns:dc="http://purl.org/metadata/dublin_core" xmlns:oebpackage="http://openebook.org/namespaces/oeb-package/1.0/">
-            <dc:Title>{title}-{book_idx}</dc:Title>
+            <dc:Title>{title}</dc:Title>
             <dc:Language>zh-cn</dc:Language>
             <dc:Creator>{author}</dc:Creator>
             <dc:Copyrights>{author}</dc:Copyrights>
@@ -202,10 +211,10 @@ class Book:
         </dc-metadata>
     </metadata>
     <manifest>
-        <item id="toc" properties="nav" href="book-{book_idx}.html" media-type="application/xhtml+xml"/>
-        <item id="content" media-type="application/xhtml+xml" href="book-{book_idx}.html"></item>
+        <item id="toc" properties="nav" href="{book}.html" media-type="application/xhtml+xml"/>
+        <item id="content" media-type="application/xhtml+xml" href="{book}.html"></item>
         <item id="cover-image" media-type="image/png" href="{cover}"/>
-        <item id="ncx" media-type="application/x-dtbncx+xml" href="toc-{book_idx}.ncx"/>
+        <item id="ncx" media-type="application/x-dtbncx+xml" href="{toc}.ncx"/>
     </manifest>
     <spine toc="ncx">
         <itemref idref="cover-image"/>
@@ -213,16 +222,17 @@ class Book:
         <itemref idref="content"/>
     </spine>
     <guide>
-        <reference type="toc" title="{title_name}" href="book-{book_idx}.html#toc"/>
-        <reference type="content" title="Book" href="book-{book_idx}.html"/>
+        <reference type="toc" title="{title_name}" href="{book}.html#toc"/>
+        <reference type="content" title="Book" href="{book}.html"/>
     </guide>
 </package>
         """.format(
             title_name='目录',
             author=self._author,
-            title=self._title,
+            title=title,
             cover=self._cover_img,
-            book_idx=book_idx
+            book=book,
+            toc=toc
         )
         return opf_file
 
@@ -335,5 +345,6 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 
 
     def gen_mobi(self, book_idx):
+        project_opf_filename = 'project-{}.opf'.format(book_idx) if self._chapterization else 'project.opf'
         return '{kindlegen} {project_opf}'.format(kindlegen=self._kindlegen, 
-            project_opf=os.path.join(os.path.dirname(__file__), 'project-{}.opf'.format(book_idx)))
+            project_opf=os.path.join(os.path.dirname(__file__), project_opf_filename))
