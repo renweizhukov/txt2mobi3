@@ -87,10 +87,10 @@ class Txt2Mobi3:
     def reset_config(self):
         raw_def_configs = [
             '[txt2mobi3]',
-            'kindlegen="{}"'.format(self._default_kindlegen_path),
+            'kindlegen={}'.format(self._default_kindlegen_path),
             '',
             '[book]',
-            'def-cover-img="{}"'.format(self._default_cover_img_path),
+            'def-cover-img={}'.format(self._default_cover_img_path),
             'max-chapter={}'.format(self._default_max_chapters),
             'chapterization=off'
         ]
@@ -126,7 +126,7 @@ class Txt2Mobi3:
                 # (i.e., cp1252), so explicitly set the encoding to "utf-8".
                 with open(opf_path, 'w', encoding='utf-8') as f:
                     f.write(book.gen_opf(book_idx))
-                print('{}文件生成完毕'.format(opf_filename))
+                print('[INFO]: {}文件生成完毕'.format(opf_filename))
 
                 # 生成ncx文件
                 ncx_path = os.path.join(self._config_dir, ncx_filename)
@@ -134,7 +134,7 @@ class Txt2Mobi3:
                 # (i.e., cp1252), so explicitly set the encoding to "utf-8".
                 with open(ncx_path, 'w', encoding='utf-8') as f:
                     f.write(book.gen_ncx(book_idx))
-                print('{}文件生成完毕'.format(ncx_filename))
+                print('[INFO]: {}文件生成完毕'.format(ncx_filename))
 
                 # 生成book.html
                 book_path = os.path.join(self._config_dir, html_filename)
@@ -142,11 +142,13 @@ class Txt2Mobi3:
                 # (i.e., cp1252), so explicitly set the encoding to "utf-8".
                 with open(book_path, 'w', encoding='utf-8') as f:
                     f.write(book.gen_html(book_idx))
-                print('{}文件生成完毕'.format(html_filename))
+                print('[INFO]: {}文件生成完毕'.format(html_filename))
 
                 # 调用KindleGen来生成mobi文件
                 if not is_dryrun:
-                    os.system(book.gen_mobi(book_idx))
+                    kindlegen_cmd = book.gen_mobi(book_idx)
+                    print('[INFO]: 调用KindleGen：{}'.format(kindlegen_cmd))
+                    os.system(kindlegen_cmd)
                     if self.get_config('chapterization'):
                         src_mobi_filename = 'project-{}.mobi'.format(book_idx)
                         des_mobi_filename = '{}-{}.mobi'.format(book_params['title'], book_idx)

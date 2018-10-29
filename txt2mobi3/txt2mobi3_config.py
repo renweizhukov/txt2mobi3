@@ -18,20 +18,20 @@ class Txt2Mobi3Config:
 
     @property
     def kindlegen(self):
-        return self._cfp.get('txt2mobi3', 'kindlegen').strip('\"')
+        return self._cfp.get('txt2mobi3', 'kindlegen')
 
     @kindlegen.setter
     def kindlegen(self, val):
-        self._cfp.set('txt2mobi3', 'kindlegen', '"{}"'.format(val))
+        self._cfp.set('txt2mobi3', 'kindlegen', val)
 
 
     @property
     def def_cover_img(self):
-        return self._cfp.get('book', 'def-cover-img').strip('\"')
+        return self._cfp.get('book', 'def-cover-img')
 
     @def_cover_img.setter
     def def_cover_img(self, val):
-        self._cfp.set('book', 'def-cover-img', '"{}"'.format(val))
+        self._cfp.set('book', 'def-cover-img', val)
 
 
     @property
