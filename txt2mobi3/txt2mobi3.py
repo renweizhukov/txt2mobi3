@@ -147,14 +147,18 @@ class Txt2Mobi3:
                 # 调用KindleGen来生成mobi文件
                 if not is_dryrun:
                     kindlegen_cmd = book.gen_mobi(book_idx)
+                    if sys.platform == 'win32':
+                        # 因为在windows上os.system无法正确处理含有space的路径（比如C:\Program Files (x86)），
+                        # 所以需要采用double double quotes。
+                        kindlegen_cmd = '"{}"'.format(kindlegen_cmd)
                     print('[INFO]: 调用KindleGen：{}'.format(kindlegen_cmd))
                     os.system(kindlegen_cmd)
                     if self.get_config('chapterization'):
                         src_mobi_filename = 'project-{}.mobi'.format(book_idx)
-                        des_mobi_filename = '{}-{}.mobi'.format(book_params['title'], book_idx)
+                        des_mobi_filename = '{}_{}-{}.mobi'.format(book_params['author'], book_params['title'], book_idx)
                     else:
                         src_mobi_filename = 'project.mobi'
-                        des_mobi_filename = '{}.mobi'.format(book_params['title'])
+                        des_mobi_filename = '{}_{}.mobi'.format(book_params['author'], book_params['title'])
                     src_path = os.path.join(self._config_dir, src_mobi_filename)
                     des_dir = book_params.get('dest_dir', os.getcwd())
                     des_path = os.path.join(des_dir, des_mobi_filename)

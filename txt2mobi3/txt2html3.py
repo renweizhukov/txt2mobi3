@@ -347,7 +347,6 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 
     def gen_mobi(self, book_idx):
         project_opf_filename = 'project-{}.opf'.format(book_idx) if self._chapterization else 'project.opf'
-        # 因为在windows上os.system无法正确处理含有space的路径（比如C:\Program Files (x86)），
-        # 所以需要采用double double quotes。
-        return '""{kindlegen}" "{project_opf}""'.format(kindlegen=self._kindlegen, 
+        # 为了应付路径中可能出现的spaces，这里我们为kindlegen和project_opf都加上double quotes。
+        return '"{kindlegen}" "{project_opf}"'.format(kindlegen=self._kindlegen, 
             project_opf=os.path.join(self._config_dir, project_opf_filename))
