@@ -87,10 +87,10 @@ class Txt2Mobi3:
     def reset_config(self):
         raw_def_configs = [
             '[txt2mobi3]',
-            'kindlegen={}'.format(self._default_kindlegen_path),
+            'kindlegen="{}"'.format(self._default_kindlegen_path),
             '',
             '[book]',
-            'def-cover-img={}'.format(self._default_cover_img_path),
+            'def-cover-img="{}"'.format(self._default_cover_img_path),
             'max-chapter={}'.format(self._default_max_chapters),
             'chapterization=off'
         ]
