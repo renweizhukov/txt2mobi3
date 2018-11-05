@@ -60,7 +60,7 @@ class Txt2Mobi3:
         self._default_kindlegen_path = base_path / 'resources' / 'kindlegen' / os_subdir / kindlegen_exe
         self._default_cover_img_path = base_path / 'resources' / 'img' / 'default_cover.png'
         self._default_max_chapters = 1500
-        self._config_parser = txt2mobi3_config.Txt2Mobi3Config(self._config_file_path)
+        self._config_parser = txt2mobi3_config.Txt2Mobi3Config(str(self._config_file_path))
 
 
     def initialize(self):

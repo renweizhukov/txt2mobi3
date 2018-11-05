@@ -74,7 +74,7 @@ class Book:
     书对象
     """
     def __init__(self, book_params, config_dir):        
-        self._config = txt2mobi3_config.Txt2Mobi3Config(config_dir / '.config.ini')
+        self._config = txt2mobi3_config.Txt2Mobi3Config(str(config_dir / '.config.ini'))
         
         # 以二进制形式读入文件得到bytes从而来识别字符集
         with open(book_params['txt_file'], 'rb') as f:
