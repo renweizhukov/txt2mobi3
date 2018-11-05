@@ -3,7 +3,6 @@
 
 import chardet
 import re
-import os
 
 if __package__:
     # If this module is imported as part of the txt2mobi3 package, then use
@@ -75,7 +74,7 @@ class Book:
     书对象
     """
     def __init__(self, book_params, config_dir):        
-        self._config = txt2mobi3_config.Txt2Mobi3Config(os.path.join(config_dir, '.config.ini'))
+        self._config = txt2mobi3_config.Txt2Mobi3Config(config_dir / '.config.ini')
         
         # 以二进制形式读入文件得到bytes从而来识别字符集
         with open(book_params['txt_file'], 'rb') as f:
@@ -349,4 +348,4 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         project_opf_filename = 'project-{}.opf'.format(book_idx) if self._chapterization else 'project.opf'
         # 为了应付路径中可能出现的spaces，这里我们为kindlegen和project_opf都加上double quotes。
         return '"{kindlegen}" "{project_opf}"'.format(kindlegen=self._kindlegen, 
-            project_opf=os.path.join(self._config_dir, project_opf_filename))
+            project_opf=str(self._config_dir / project_opf_filename))

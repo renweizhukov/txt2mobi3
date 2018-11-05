@@ -3,7 +3,7 @@
 # BUGBUG: change the version comparison operator from '==' into '>=' by hand.
 
 # txt2mobi3/txt2html3.py: 4
-chardet >= 3.0.4
+chardet == 3.0.4
 
 # setup.py: 9
-setuptools >= 34.2.0
+setuptools == 34.2.0

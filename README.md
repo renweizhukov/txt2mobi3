@@ -178,7 +178,7 @@ optional arguments:
 例子：
 
 ```bash
-$ txt2mobi3_clt conv --txt 海晏_琅琊榜.txt --title 琅琊榜 --author 海宴
+$ txt2mobi3_clt conv -x 海晏_琅琊榜.txt -t 琅琊榜 -a 海宴
 ```
 
 ### 2.4. 预演从txt到mobi的转化
@@ -212,7 +212,7 @@ optional arguments:
 例子：
 
 ```bash
-$ txt2mobi3_clt drun --txt 海晏_琅琊榜.txt --title 琅琊榜 --author 海宴
+$ txt2mobi3_clt drun -x 海晏_琅琊榜.txt -t 琅琊榜 -a 海宴
 ```
 
 ## 3. 关于Python3中的Unicode
