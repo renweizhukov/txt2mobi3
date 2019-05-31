@@ -133,6 +133,7 @@ class Book:
         if self._chapterization:
             idx = 1
             chapter = Chapter('前言', 0)
+            self._chapters.append(chapter)
             for line in lines:
                 if self._is_chapter_title(line):
                     chapter = Chapter(line.strip(), idx)
