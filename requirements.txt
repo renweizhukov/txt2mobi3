@@ -6,4 +6,4 @@
 chardet == 3.0.4
 
 # setup.py: 9
-setuptools == 70.0.0
+setuptools == 78.1.1
